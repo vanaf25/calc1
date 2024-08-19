@@ -1,80 +1,53 @@
 import './App.css';
-import {Box, Button, Paper, TextField, Typography} from "@mui/material";
-import { useForm } from "react-hook-form";
-import {useState} from "react";
+import React, {useState} from "react";
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Box from '@mui/material/Box';
+import Cards from "./Cards/Cards";
+import Form from './Form/Form';
+function CustomTabPanel(props) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+        >
+            {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+        </div>
+    );
+}
+
+function a11yProps(index) {
+    return {
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`,
+    };
+}
 
 function App() {
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
-    const [GBQ,setGBQ]=useState(0);
-    const [DEQ,setDEQ]=useState(0);
-    const [ZSQ,setZSQ]=useState(0);
-    const [DFQ,setDFQ]=useState(0);
-    const [DSQ,setDSQ]=useState(0);
-    const [DBQ,setDBQ]=useState(0)
-    const onSubmit = data =>{
-        console.log(data);
-        const L=+data.L;
-        const O=+data.O;
-        const D=+data.D;
-        //Flasing Quanity;
-        const J=L/10
-        //Downspout Section Quantity
-        const M1=O*D;
-        const M2=Math.round(M1);
-        const M=M2/10;
-        setDSQ(M);
-        //Downspout Bracket Quantity
-        const B=Math.round(M*2,2);
-        setDBQ(B);
-        //Downspout Fastener Quantity
-        const T=B*4;
-        setDFQ(T);
-        //Gutter Bracket Quantity
-        setGBQ(L/1.3);
-       // Downspout Extension Quantity
-        setDEQ(Math.round((O*2)/10));
-        //Zip Screw Quantity
-        setZSQ(M*12+L+T)
-    }
-    const filterFields=(e)=>{
-        if (!["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "Backspace", "ArrowLeft", "ArrowRight", "Delete", "Tab","Enter"].includes(e.key)) e.preventDefault()
-    }
+    const [value, setValue] = React.useState(0);
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
     return (
         <>
-            <Paper
-                onSubmit={handleSubmit(onSubmit)}
-                component="form"
-                sx={{
-                    maxWidth:600,
-                    margin:"10px auto",
-                    padding:"10px",
-                }}
-                noValidate
-                autoComplete="off"
-            >
-                <TextField
-                    onKeyDown={filterFields}
-                    type={"number"} min={"0"} sx={{mb:1}}
-                    fullWidth {...register("L",{valueAsNumber:true,required:true})} id="outlined-basic" label="Provide Glutter Length" variant="outlined" />
-                <TextField type={"number"} min={"0"} sx={{mb:1}} fullWidth {...register("O",
-                    {valueAsNumber:true,required:true})} id="outlined-basic" label="Provide Downspout Quantity" variant="outlined" />
-                <TextField type={"number"} min={"0"} sx={{mb:1}}
-                           fullWidth {...register("D",{valueAsNumber:true,required:true})} id="outlined-basic" label="Provide Downspout Height" variant="outlined" />
-                <TextField type={"number"} min={"0"} sx={{mb:1}} fullWidth {...register("H",
-                    {valueAsNumber:true,required:true})} id="outlined-basic" label="Provide Gutter Height" variant="outlined" />
-                <Box>
-                    <Button fullWidth  type={"submit"} variant={"contained"}>Submit</Button>
-                </Box>
-            </Paper>
-            {ZSQ ? <Paper sx={{maxWidth:600,margin:"10px auto",padding:"10px"}}>
-                <Typography>Downspout section quantity:{DSQ}</Typography>
-                <Typography>Downspout bracket quantity:{DBQ}</Typography>
-                <Typography>Downspout fastener quantity:{DFQ}</Typography>
-                <Typography>Gutter Bracket Quantity:{GBQ}</Typography>
-                <Typography>Downspout Extension Quantity:{DEQ}</Typography>
-                <Typography>Zip Screw Quantity:{ZSQ}</Typography>
-
-            </Paper>:""}
+            <Box sx={{ borderBottom: 1, borderColor: 'divider',background:"#fff !important" }}>
+                <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                    <Tab label="Form" {...a11yProps(0)} />
+                    <Tab label="Cards" {...a11yProps(1)} />
+                </Tabs>
+            </Box>
+            <CustomTabPanel value={value} index={0}>
+                <Form/>
+            </CustomTabPanel>
+            <CustomTabPanel value={value} index={1}>
+                <Cards/>
+            </CustomTabPanel>
         </>
   );
 }
