@@ -13,37 +13,19 @@ const Form = () => {
     const [DBQ,setDBQ]=useState(0)
     const onSubmit = data =>{
         console.log(data);
-        const L=+data.L;
-        const O=+data.O;
-        const D=+data.D;
-        //Flasing Quanity;
-        const J=L/10
-        //Downspout Section Quantity
-        const M1=O*D;
-        const M2=Math.round(M1);
-        const M=M2/10;
-        setDSQ(M);
-        //Downspout Bracket Quantity
-        const B=Math.round(M*2,2);
-        setDBQ(B);
-        //Downspout Fastener Quantity
-        const T=B*4;
-        setDFQ(T);
-        //Gutter Bracket Quantity
-        const GBQ=L/1.3
-        setGBQ(GBQ);
-        // Downspout Extension Quantity
-        const DEQ=Math.round((O*2)/10)
-        setDEQ(DEQ);
-        //Zip Screw Quantity
-        const ZSQ=M*12+L+T
-        setZSQ(ZSQ)
         fetch(BASE_URL,{method:"POST",
             headers: {
                 'Content-Type': 'application/json',
             },
-            body:JSON.stringify({ZSQ,DEQ,GBQ,DFQ:T,DBQ:B,DSQ:M})})
-            .then(res=>console.log('Created!',res));
+            body:JSON.stringify(data)})
+            .then(res=>res.json()).then(res=>{
+                setDBQ(res.DBQ);
+                setDSQ(res.DSQ);
+                setZSQ(res.ZSQ);
+                setDEQ(res.DEQ);
+                setGBQ(res.GBQ);
+                console.log('res:',res);
+        })
     }
     const filterFields=(e)=>{
         if (!["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "Backspace", "ArrowLeft", "ArrowRight", "Delete", "Tab","Enter"].includes(e.key)) e.preventDefault()

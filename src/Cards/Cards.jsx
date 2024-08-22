@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Card from "./Card/Card"
 import {Typography} from "@mui/material";
-const  BASE_URL="https://backend-two-xi-40.vercel.app/"
+const  BASE_URL="https://backend-two-xi-40.vercel.app/";
 const Cards = () => {
     const [cards,setCards]=useState([]);
     const [isLoading,setIsLoading]=useState(false)
