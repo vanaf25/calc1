@@ -11,7 +11,7 @@ const ProductCard = ({name,price,_id,deleteProduct}) => {
                         {name}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                        {price}
+                        {price}$
                     </Typography>
                 </CardContent>
             </CardActionArea>
