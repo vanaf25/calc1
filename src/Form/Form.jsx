@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {useForm} from "react-hook-form";
 import {Box, Button, Paper, TextField, Typography} from "@mui/material";
 import Card from './../Cards/Card/Card';
-const  BASE_URL="https://backend-two-xi-40.vercel.app/"
+import {BASE_URL} from "../consts/consts";
 const Form = () => {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const [GBQ,setGBQ]=useState(0);

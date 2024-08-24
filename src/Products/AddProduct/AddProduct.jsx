@@ -30,8 +30,10 @@ const Form = () => {
 
     }, [id]);
     let navigate = useNavigate();
+    const [isSubmitting,setIsSubmitting]=useState(false);
     const onSubmit = data =>{
         console.log(data);
+        setIsSubmitting(true)
         fetch(`${BASE_URL}products/${id ? id :""}`,
             {method:id ? "PATCH":"POST",
             headers: {
@@ -41,6 +43,7 @@ const Form = () => {
             .then(res=>res.json()).then(res=>{
                 reset()
             navigate("/products")
+            setIsSubmitting(false)
             console.log('res:',res);
         });
     }
@@ -67,7 +70,7 @@ const Form = () => {
                 <TextField onKeyDown={filterFields} type={"number"} min={"0"} sx={{mb:1}} fullWidth {...register("price",
                     {valueAsNumber:true,required:true})} id="outlined-basic" label="Provide price" variant="outlined" />
                 <Box>
-                    <Button fullWidth  type={"submit"} variant={"contained"}>Submit</Button>
+                    <Button disabled={isSubmitting} fullWidth  type={"submit"} variant={"contained"}>Submit</Button>
                 </Box>
             </Paper>}
         </>
